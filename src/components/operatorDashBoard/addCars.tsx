@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 import React, { useEffect, useState } from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, DatePickerProps, Form, Input, Select } from 'antd';
+import { LockOutlined, UserOutlined, EditOutlined, DeleteOutlined , SearchOutlined } from '@ant-design/icons';
+import { Button, Checkbox, DatePicker, DatePickerProps, Form, Input, Modal, Select } from 'antd';
 import { tokenToString } from "typescript";
 import { verify } from "crypto";
 import { config } from "process";
@@ -15,12 +15,13 @@ interface DataType {
   key: React.Key;
   stt: number;
   Name_of_driver: string;
+  
   name_of_Cars: string;
-  type_of_cars: number;
+  type_of_cars: string;
   phone: string;
+  cars_template:string
 
 }
-
 
 
 const AddCars: React.FC = () => {
@@ -34,6 +35,17 @@ const AddCars: React.FC = () => {
     {
       title: 'Name_of_driver',
       dataIndex: 'Name_of_driver',
+      filterDropdown: () => {
+        return <Input autoFocus placeholder='Search'  onPressEnter={() => {
+
+        }}
+        onBlur={()=> {}}></Input>
+        
+          
+      },
+      filterIcon: () => {
+        return <SearchOutlined/>
+      }
     },
     {
       title: 'name_of_car',
@@ -46,10 +58,10 @@ const AddCars: React.FC = () => {
     {
       title: 'type_of_cars',
       dataIndex: 'type_of_cars',
-      sorter: {
-        compare: (a, b) => a.type_of_cars - b.type_of_cars,
-        multiple: 2,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.type_of_cars - b.type_of_cars,
+      //   multiple: 2,
+      // },
     },
     {
       title: 'cars_template',
@@ -64,7 +76,43 @@ const AddCars: React.FC = () => {
       dataIndex: 'phone',
 
     },
+    {
+      title: 'Date_of_birth',
+      dataIndex: 'date_of_birth',
+
+    },
+    // {
+    //   title: "Actions",
+    //   render: (_, record) => {
+    //     return (
+    //       <>
+    //         <button onClick={Onclickk} style={{ color: 'red' }}>edit </button>
+    //       </>
+    //     )
+    //   }
+    // } ,
+    {
+      title: "Action",
+      render: (_, record) => {
+        return (
+          <>
+            <EditOutlined onClick={() => {
+               onEditting(record.Name_of_driver, record.cars_template , record.name_of_Cars , record.phone, record.type_of_cars)
+              // onEditting(record)
+            }} />
+            <DeleteOutlined onClick={() => {
+              onDeleteDriver(record.Name_of_driver)
+            }} style={({ color: "red", marginLeft: 12 })} />
+          </>
+        )
+      }
+    }
+
   ];
+
+  const Onclickk = () => {
+    console.log(123)
+  }
 
 
 
@@ -134,6 +182,8 @@ const AddCars: React.FC = () => {
 
   };
 
+  // const [newDriver, setNewDriver] = useState<boolean>(false)
+
   const [driver, setDriver] = useState([])
   const [refresh, setRefresh] = useState<boolean>(false)
   useEffect(() => {
@@ -159,9 +209,106 @@ const AddCars: React.FC = () => {
     getListDriver()
   }, [refresh])
 
+
+
   const onChange: DatePickerProps['onChange'] = (date, dateString) => {
     console.log(date, dateString);
   };
+
+  console.log("driver", driver)
+  const dataDriver = driver
+
+
+
+
+  const onDeleteDriver = async (Name_of_driver: string) => {
+
+    Modal.confirm({
+      title: "Are you sure , you want to delete this Driver",
+      okText:"yes" , 
+      okType:"danger" ,
+      onOk: async () => {
+        const getToken = localStorage.getItem('token')
+
+        const deleteDriver = await axios.delete("http://localhost:8000/api/v1/deleteDriver ", {
+          headers: { Authorization: `Bearer ${getToken}` }, data: {
+            Name_of_driver: Name_of_driver
+          }
+        });
+      }
+    })
+
+    setRefresh(!refresh)
+
+
+
+  }
+
+
+
+  const [editDriver , setEditDriver] =  useState({})
+  const [newDriver , setNewDriver] = useState<boolean>(false);
+
+
+
+
+
+
+  const onEditting =async (Name_of_driver:string , phone:string ,cars_template: string , type_of_cars:string   , name_of_car:string ) => {
+    const data = {
+      Name_of_driver:Name_of_driver ,
+      phone:phone ,
+      cars_template:cars_template ,
+      type_of_cars:type_of_cars ,
+      name_of_car:name_of_car
+
+
+    }
+    setEditDriver({
+        Name_of_driver ,
+      phone,
+      cars_template,
+      type_of_cars ,
+      name_of_car
+      
+
+    })
+    // console.log(editDriver)
+    setNewDriver(true)
+  }
+
+
+  console.log("editDriver" , editDriver)
+  
+  // const onEditting = async ( Name_of_driver: string , phone:string , cars_template: string) => {
+
+
+  //   setEditDriver({
+  //     Name_of_driver ,
+  //   })
+
+
+
+  //   setNewDriver(true)
+
+   
+  //   // setEditDriver(driver)
+
+  //   // const {id} = usePa
+
+  //   const getToken = localStorage.getItem('token')
+
+  //   const UpdateDriver = await axios.put("http://localhost:8000/api/v1/updateDrivers ", {
+  //     headers: { Authorization: `Bearer ${getToken}` },data : {
+  //       Name_of_driver: Name_of_driver ,
+  //       phone: phone ,
+  //       cars_template:cars_template 
+        
+        
+  //     }
+  //   });
+  // }
+
 
   return (
     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", width: "1200px" }}>
@@ -227,7 +374,7 @@ const AddCars: React.FC = () => {
             // tooltip="What do you want others to call you?"
             rules={[{ required: true, message: 'Please input your type_of_cars!', whitespace: true }]}
           >
-            <Input />
+            <Input /> 
           </Form.Item>
 
           <Form.Item
@@ -263,7 +410,39 @@ const AddCars: React.FC = () => {
 
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}> <h1 style={{ display: 'flex', marginLeft: '380px', alignItems: "center", marginBottom: '25px' }}>List Info Drivers </h1> <Table style={{ width: "750px", height: '200px', position: "relative", left: '120px', }} columns={columns} dataSource={driver} onChange={onChangee} /> </div>
+
+
+      <div style={{ display: 'flex', flexDirection: 'column', marginTop: '0px' }}>
+        <h1 style={{ display: 'flex', marginLeft: '380px', alignItems: "center", marginBottom: '15px' }}>List Info Drivers </h1>
+        <Table style={{ width: "800px", height: '220px', position: "relative", left: '50px', }} columns={columns} dataSource={driver} onChange={onChangee} />
+        <Modal
+          title="Edit Driver " 
+          
+          visible={newDriver}
+          okText="update"
+          onCancel={() => {
+            setNewDriver(false)
+          }}
+          onOk={() => {
+            setNewDriver(false)
+          }}
+
+
+
+        >
+          <Input value={`edit` } onChange={(e) => {
+      setEditDriver({
+        ...editDriver,
+        Name_of_driver: e.target.value
+      });
+    }} ></Input>
+          <Input  ></Input>
+          <Input ></Input>
+          <Input onChange={(e) => { 
+             
+          }}></Input>
+        </Modal>
+      </div>
 
 
     </div>

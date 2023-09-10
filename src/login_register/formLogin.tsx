@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import "./login.css"
@@ -64,8 +64,9 @@ const LoginForm: React.FC = () => {
         <Checkbox>Remember me</Checkbox>
       </Form.Item>
 
-      <a className="login-form-forgot" href="">
+      <a className="login-form-forgot" href="/forgot-password">
         Forgot password
+        
       </a>
     </Form.Item>
 

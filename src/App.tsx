@@ -30,43 +30,16 @@ function App() {
  
 
   return (
+    <Routes>
+      <Route path='/login' element={<Login/>} />
+      <Route path='register' element= {<Register  />} />
+
+    </Routes>
     
 
     
-      <Routes >
-        <Route >
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path='/User' element={<UserPage />} />
-          {/* <Route path='/operator' element={<OperatorPage />} /> */}
-        </Route>
-
-         {/* <Route element={<PrivateRoute />}>
-          <Route element={<CheckUserRouter />}>
-            <Route path='/User' element={<UserPage />} />
-            <Route path='/operator' element={<OperatorPage />} />
-            <Route path='/*' element={<>Page not Found error 404</>} />
-          </Route>
-          <Route element={<CheckOperatorRouter />}>
-
-
-          </Route>
-          <Route path="logout" element={<Logout />} />
-        </Route>  */}
-
-
-        {/* <Route  element={<PrivateOperatorRoute />}>
-      <OperatorPage/>
-      </Route>  */}
-
-
-        {/* <Route>
-          <>appoverPage</>
-        </Route> */}
-
-
-
-      </Routes>
+     
+      
 
 
      

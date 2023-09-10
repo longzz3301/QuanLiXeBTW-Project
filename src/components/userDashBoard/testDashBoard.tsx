@@ -20,25 +20,55 @@ import FormProcess from "./FormProcess";
 import WaitForm from "./WaitForm";
 import BookedForm from "./BookedForm";
 import { StaticsForm } from "./staticsForm";
-import * as firebaseMessage from "../../firebase.service";
-import { getMessagingToken } from "../../firebase.service";
+import firebase, { message } from '../../firebase'
 
+export interface Notification {
+  title: any,
+  body: any
+}
 
 function UserPage() {
+  const [dataNotify, setDataNotify] = useState<Notification>({ title: '', body: '' });
+
+  //   useEffect(() => {
+  //     getMessagingToken();
+  //     const channel = new BroadcastChannel("notifications");
+  //     channel.addEventListener("message", (event) => {
+  //       console.log("Receive background: ", event.data);
+  //     });
+  //   },[])
+  //  useEffect(() => {
+  //   firebaseMessage.onMessageListener().then(data => {
+  //       console.log("Receive foreground: ",data)
+  //    })
+  // })
+
+  // receive notification server trả về 
+  message.onMessage((payload) => {
+    console.log(`[message.onMessage]: `, payload)
+    if (!payload?.notification) {
+      console.log("!payload?.notification")
+      // setStateData({ ...stateData, open: true, severity: 'error' })
+      return;
+    }
+
+    const { notification } = payload
+
+    // setStateData({ ...stateData, open: true, severity: 'success' })
+    setDataNotify({ title: notification.title, body: notification.body })
+  });
+
+  // getToken và push tokenID lên server 
   useEffect(() => {
-    getMessagingToken();
-    const channel = new BroadcastChannel("notifications");
-    channel.addEventListener("message", (event) => {
-      console.log("Receive background: ", event.data);
-    });
-  },[])
- useEffect(() => {
-  firebaseMessage.onMessageListener().then(data => {
-      console.log("Receive foreground: ",data)
-   })
-})
-
-
+    const messaging = firebase.messaging()
+    messaging.requestPermission()
+      .then(() => {
+        return messaging.getToken()
+      })
+      .then(token => {
+        console.log("TOKEN: ", token)
+      })
+  }, [])
 
 
   const getProfile = async () => {
@@ -73,12 +103,12 @@ function SideMenu() {
         if (key === 'SignOut') {
           const deleteTOken = localStorage.clear()
           console.log(deleteTOken)
-           return <Navigate to={"/login"} replace />;
+          return <Navigate to={"/login"} replace />;
 
         }
         else {
           navigate(key)
-          
+
         }
 
       }} items={[
@@ -112,15 +142,15 @@ function Context() {
     console.log(data)
   }
 
-  const [page , setPage] = useState()
+  const [page, setPage] = useState()
   return (
-    
 
-    
+
+
     <div>
-      
-      
-     
+
+
+
 
 
 
@@ -144,8 +174,8 @@ function Context() {
 
 
 
-             
-        {/* <Link to ="/User" > <BookingForm /></Link>
+
+      {/* <Link to ="/User" > <BookingForm /></Link>
         <Link to ="/FormProcess" > <FormProcess/> </Link>
         <Link to ="Profile" ><ProfileUser /></Link>
         <Link to="/History" ><div>History</div></Link>
