@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Button, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 
@@ -70,6 +70,44 @@ const columns: ColumnsType<DataType> = [
     key: 'Driver',
     
   },
+  {
+    title: 'status',
+    key: 'status',
+    dataIndex: 'status',
+    render: (text, record: any) => {
+        let color = '';
+        if (record.status.toString() === 'COMPLETE_FORM') {
+            color = 'green';
+        } else if (record.status.toString() === 'CANCEL_FORM') {
+            color = 'red';
+        } else if (record.status.toString() === 'APPROVED') {
+            color = 'volcano'; // Màu mặc định nếu không khớp với "COMPLETE" hoặc "Cancel"
+        } else if (record.status.toString() === 'BOOKED_FORM') {
+            color = 'yellow'
+        } else {
+            color = 'blue'
+        }
+
+        return (
+            <Tag color={color}>
+                {record.status.toString().toLocaleUpperCase()}
+            </Tag>
+        );
+    },
+},
+  {
+    title: "Actions",
+    render: (_, record) => {
+      return (
+        <>
+         
+         <Button style={{backgroundColor:"primary"}} type="primary"> Infor Driver </Button>
+
+         
+        </>
+      )
+    }
+  }
  
   
 ];
@@ -107,7 +145,7 @@ const BookedForm: React.FC = () => {
 
 
   return(
-    <div style={{display:'flex' , flexDirection:'column' , margin:"10px 20px 20px 20px", width:'1250px' , height:'300px'}}> 
+    <div style={{display:'flex' , flexDirection:'column' , margin:"10px 20px 20px 20px", width:'1340px' , height:'300px'}}> 
       <h2 style={{marginBottom:'50px'}}>Booked Form</h2>
       <Table style={{width:'100%' , height:'300px' }} columns={columns} dataSource={dataForm} />
     </div>

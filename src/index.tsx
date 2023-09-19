@@ -13,17 +13,15 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
+  <App/>
 
-  <BrowserRouter>
-    {/* <Routes>
-      <Route path='/*' element={<App />} />
+  // <BrowserRouter>
 
-    </Routes> */}
-    {/* <App/> */}
-    {/* <UserPage/> */}
-    <OperatorPage/>
+    
+  //   <UserPage/>
+    
 
-  </BrowserRouter>
+  // </BrowserRouter>
 );
 
 

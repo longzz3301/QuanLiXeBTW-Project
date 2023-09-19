@@ -18,6 +18,13 @@ import PublicRoute from 'PublicRouter';
 import Logout from 'Logout';
 import CheckUserRouter from 'components/userDashBoard/CheckUserRouter';
 import CheckOperatorRouter from 'components/operatorDashBoard/CheckOperatorRouter';
+import FormProcess from 'components/userDashBoard/FormProcess';
+import Caalennder from 'components/userDashBoard/Calender';
+import CompleteForm from 'components/userDashBoard/CompleteForm';
+import BookedForm from 'components/userDashBoard/BookedForm';
+import CancelForm from 'components/userDashBoard/CancelForm';
+import WaitForm from 'components/userDashBoard/WaitForm';
+import { StaticsForm } from 'components/userDashBoard/staticsForm';
 
 // import TestLayout from 'components/userDashBoard/testDashBoard';
 // import TestDashBoard from 'components/userDashBoard/testDashBoard';
@@ -27,55 +34,87 @@ import CheckOperatorRouter from 'components/operatorDashBoard/CheckOperatorRoute
 function App() {
 
 
- 
+
 
   return (
-    
+    // <Routes>
+    //   <Route path='/login' element={<Login/>} />
+    //   <Route path='register' element= {<Register  />} />
 
-    
+    // </Routes>
+
+
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route element={<PrivateRoute />}>
+
+    //       <Route path="FormProcess" element={<FormProcess />} />
+    //       <Route path="calender" element={<Caalennder />} />
+    //       <Route path="History" element={<div>History</div>} />
+    //       <Route path="CompleteForm" element={<CompleteForm />} />
+    //       <Route path="Booked" element={<BookedForm />} />
+    //       <Route path="CancelForm" element={<CancelForm />} />
+    //       <Route path="Wait" element={<WaitForm />} />
+
+
+    //       <Route path="statics" element={<StaticsForm />}></Route>
+
+    //       <Route path="SignOut" element={<div>SignOut</div>}></Route>
+
+    //     </Route>
+    //     <Route element={<PublicRoute />}>
+    //       <Route path='login' element={<Login />} />
+    //       <Route path='register' element={<Register />} />
+
+    //     </Route>
+    //     <Route path="*" element={<>Not Found</>} />
+
+    //   </Routes>
+    // </BrowserRouter >
+
+
+
+
+
+
+
+    <BrowserRouter>
       <Routes >
-        <Route >
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path='/User' element={<UserPage />} />
-          {/* <Route path='/operator' element={<OperatorPage />} /> */}
+        {/* <Route path='/' element={<PublicRoute />} >
+
+    <Route path='/login' element={<Login />} />
+    <Route path='/register' element={<Register />} />
+  </Route> */}
+
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route path="" element={<UserPage />} />
+          <Route path="FormProcess" element={<FormProcess />}></Route>
+              <Route path="/calender" element={<Caalennder />}></Route>
+              <Route path="History" element={<div>History</div>}></Route>
+              <Route path="*CompleteForm" element={<CompleteForm />}></Route>
+              <Route path="Booked" element={<BookedForm />}></Route>
+              <Route path="CancelForm" element={<CancelForm />}></Route>
+              <Route path="Wait" element={<WaitForm />}></Route>
+
+
+              <Route path="statics" element={<StaticsForm />}></Route>
+
+              <Route path="SignOut" element={<div>SignOut</div>}></Route>
         </Route>
 
-         {/* <Route element={<PrivateRoute />}>
-          <Route element={<CheckUserRouter />}>
-            <Route path='/User' element={<UserPage />} />
-            <Route path='/operator' element={<OperatorPage />} />
-            <Route path='/*' element={<>Page not Found error 404</>} />
-          </Route>
-          <Route element={<CheckOperatorRouter />}>
-
-
-          </Route>
-          <Route path="logout" element={<Logout />} />
-        </Route>  */}
-
-
-        {/* <Route  element={<PrivateOperatorRoute />}>
-      <OperatorPage/>
-      </Route>  */}
-
-
-        {/* <Route>
-          <>appoverPage</>
-        </Route> */}
-
-
-
       </Routes>
+    </BrowserRouter>
 
 
-     
   )
 };
 
 export default App;
 
- // return (
 
-  //   // element={<PublicRoute />}
+
+// element={<PublicRoute />}
 

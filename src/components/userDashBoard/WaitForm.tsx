@@ -4,8 +4,9 @@ import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 
 
-import { DatePicker } from 'antd';
+import { DatePicker , Button } from 'antd';
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
+
 
 
 interface DataType {
@@ -70,36 +71,54 @@ const columns: ColumnsType<DataType> = [
     // key: 'End_Location',
   },
   {
-    title: 'Number People',
+    title: 'People',
     dataIndex: 'number_people',
-    // key: 'number_people',
+    
 
 
   },
   {
-    title: 'Driver',
-    dataIndex: 'driver',
-    // key: 'Driver',
+    title: 'status',
+    key: 'status',
+    dataIndex: 'status',
+    render: (text, record: any) => {
+        let color = '';
+        if (record.status.toString() === 'COMPLETE_FORM') {
+            color = 'green';
+        } else if (record.status.toString() === 'CANCEL_FORM') {
+            color = 'red';
+        } else if (record.status.toString() === 'APPROVED') {
+            color = 'volcano'; // Màu mặc định nếu không khớp với "COMPLETE" hoặc "Cancel"
+        } else if (record.status.toString() === 'BOOKED_FORM') {
+            color = 'yellow'
+        } else {
+            color = 'blue'
+        }
 
-  },
+        return (
+            <Tag color={color}>
+                {record.status.toString().toLocaleUpperCase()}
+            </Tag>
+        );
+    },
+},
+  // {
+  //   title: 'Driver',
+  //   dataIndex: 'driver',
+  //   // key: 'Driver',
+
+  // },
   {
-    title: "Actions",
-    render: (_, record) => {
-      return (
-        <>
-          <button onClick={Onclickk} style={{ color: 'red' }}>View Detail</button>
-        </>
-      )
-    }
+    title:"Reason Travel" ,
+    dataIndex: 'reason'
   }
 
 
 ];
 
 
-const Onclickk = () => {
-  console.log(123)
-}
+
+
 
 
 // const data: DataType[] = [
@@ -229,19 +248,26 @@ const WaitForm: React.FC = () => {
   );
 
 
+  const [viewDetail , setViewDetail] = useState(false)
 
+  const handleDetail = (stt:number) => {
+    setViewDetail(true)
+    console.log(stt)
+  }
+  console.log("viewDetail" , viewDetail)
+  
   return (
     <div style={{ display: 'flex', flexDirection: 'column', margin: "10px 20px 20px 20px", width: '1250px', height: '300px' }}>
 
       <h2 style={{ marginBottom: '50px' }}>Form Waiting </h2>
-      <div>Search Form by date form : &emsp;<RangePicker
+      <div>Search Form by time_schedule : &emsp;<RangePicker
         style={{ marginBottom: "30px" }}
         showTime={{ format: 'HH:mm' }}
         format="YYYY-MM-DD HH:mm"
         onChange={onChange}
         onOk={onOk}
       /></div>
-      <div>Search Form by time_schedule : &emsp;<RangePicker
+      <div>Search Form by date form : &emsp;<RangePicker
         style={{ marginBottom: "30px" }}
         showTime={{ format: 'HH:mm' }}
         format="YYYY-MM-DD HH:mm"
@@ -257,3 +283,66 @@ const WaitForm: React.FC = () => {
 
 
 export default WaitForm;
+
+{/* <Modal
+          title="Edit Driver   "
+
+          visible={newDriver}
+          okText="update"
+          onCancel={() => {
+            setNewDriver(false)
+          }}
+          onOk={handleUpdate}
+
+
+
+
+
+
+        >
+
+
+          <Input
+
+            value={`name : ${editDriver.Name_of_driver}`}
+          />
+
+          <Input onChange={(e) => {
+            setEditDriver((pre) => {
+              return { ...pre, name_of_Cars: e.target.value }
+            })
+
+          }}
+            value={editDriver.name_of_Cars}>
+
+          </Input>
+
+          <Input onChange={(e) => {
+            setEditDriver((pre) => {
+              return { ...pre, type_of_cars: e.target.value }
+            })
+          }}
+            value={editDriver.type_of_cars || ""}>
+
+          </Input>
+
+          <Input onChange={(e) => {
+            setEditDriver((pre) => {
+              return { ...pre, cars_template: e.target.value }
+            })
+          }}
+            value={editDriver.cars_template || ""}>
+
+
+          </Input>
+
+          <Input onChange={(e) => {
+            setEditDriver((pre) => {
+              return { ...pre, phone: e.target.value }
+            })
+          }}
+            value={editDriver.phone || ""}>
+
+
+          </Input>
+        </Modal> */}

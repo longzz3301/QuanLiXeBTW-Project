@@ -1,4 +1,3 @@
-import Login from "login_register/login";
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
@@ -9,8 +8,8 @@ const PublicRoute = (props) => {
     return false;
   };
 
-  if (!userLoggedIn()) {
-    return <Navigate to={"login"} replace />;
+  if (userLoggedIn()) {
+    return <Navigate to={"User"} replace />;
   }
 
   return (
